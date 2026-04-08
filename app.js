@@ -12,6 +12,11 @@ const T = {
 
 // ── Furniture Database ──
 const FURNITURE = [
+  { cat:'設計師組合包',icon:'✨',items:[ // For Persona A
+    {id:'combo_living',label:'現代機能客廳組',w:300,h:250,color:'#8B7D6B',icon:'🛋️',opacity:0.8},
+    {id:'combo_bed',label:'北歐主臥套裝',w:260,h:280,color:'#7B8999',icon:'🛏️',opacity:0.8},
+    {id:'combo_dining',label:'輕奢餐廳組',w:220,h:200,color:'#B8A890',icon:'🍽️',opacity:0.8},
+  ]},
   { cat:'客廳',icon:'🛋️',items:[
     {id:'sofa3',label:'三人沙發',w:210,h:90,color:'#8B7D6B',icon:'🛋️'},
     {id:'sofa2',label:'雙人沙發',w:155,h:85,color:'#9B8D7B',icon:'🛋️'},
@@ -70,6 +75,19 @@ const FURNITURE = [
     {id:'dryer',label:'曬衣架',w:150,h:40,color:'#C0C0C0',icon:'👕'},
     {id:'swing',label:'吊椅',w:70,h:70,color:'#D4956A',icon:'🪺'},
   ]},
+  { cat:'牆面設施',icon:'🔌',items:[
+    {id:'socket',label:'插座',w:15,h:10,color:'#E0E0E0',icon:'🔌'},
+    {id:'switch',label:'開關',w:15,h:10,color:'#E0E0E0',icon:'🔘'},
+    {id:'window',label:'窗戶',w:120,h:15,color:'#B0D0E0',icon:'🪟',opacity:0.5},
+    {id:'door',label:'門',w:90,h:15,color:'#8B7355',icon:'🚪',opacity:0.6},
+  ]},
+  { cat:'育兒防護(防撞無毒)',icon:'🍼',items:[
+    {id:'crib',label:'嬰兒床(無甲醛)',w:130,h:70,color:'#D8CCBB',icon:'🚼'},
+    {id:'playmat',label:'安全地墊(厚5cm)',w:180,h:180,color:'#E8DFD0',icon:'🧩',opacity:.3},
+    {id:'toybox',label:'玩具收納',w:80,h:40,color:'#C4B8A0',icon:'🧸'},
+    {id:'gate',label:'兒童安全門欄',w:100,h:10,color:'#B0B0B0',icon:'🚧'},
+    {id:'soft_corner',label:'防撞角保護條',w:20,h:20,color:'#FFAA00',icon:'🛡️'},
+  ]},
 ];
 
 // ── Feng Shui Directions ──
@@ -91,6 +109,8 @@ const FENG_RULES = [
   {match:(item,items,room)=>item.id.startsWith('sofa')&&item.y>room.height-item.h-20,severity:'medium',msg:'沙發背後無牆，缺乏靠山'},
   {match:(item,items,room)=>item.id==='dresser'&&items.some(i=>i.id.startsWith('bed')&&Math.abs(i.x-item.x)<100),severity:'medium',msg:'化妝鏡避免正對床位'},
   {match:(item,items,room)=>item.id==='fridge'&&items.some(i=>i.id==='counter'&&Math.abs(i.x-item.x)<90&&Math.abs(i.y-item.y)<40),severity:'low',msg:'冰箱避免緊貼爐灶（水火相沖）'},
+  {match:(item,items,room)=>state.persona==='parent'&&item.id.startsWith('sofa')&&items.some(i=>i.id.startsWith('coffee')&&Math.abs(i.x-item.x)<((item.h+i.h)/2 + 80)&&Math.abs(i.y-item.y)<((item.w+i.w)/2 + 80)),severity:'high',msg:'育兒防護：走道不足 80cm，易發生橫衝直撞意外'},
+  {match:(item,items,room)=>state.persona==='parent'&&item.id==='tvstand'&&!items.some(i=>i.id==='soft_corner'&&Math.abs(i.x-item.x)<50),severity:'medium',msg:'育兒防護：電視櫃缺乏防撞邊角保護'},
 ];
 
 const DESIGN_STYLES = [

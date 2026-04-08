@@ -93,7 +93,8 @@ html {
 
 body {
   font-family: var(--font);
-  background: var(--bg);
+  background: linear-gradient(135deg, var(--bg) 0%, var(--bg-sub) 100%);
+  background-attachment: fixed;
   color: var(--text);
   min-height: 100vh;
   line-height: 1.6;
@@ -196,24 +197,24 @@ body {
 .delay-5 { animation-delay: 0.25s; }
 .delay-6 { animation-delay: 0.3s; }
 
-/* ═══════ Header ═══════ */
 .header {
   position: sticky;
   top: 0;
   z-index: 300;
-  background: var(--card-glass);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
+  background: rgba(252, 251, 249, 0.85); /* Slightly off-white for depth */
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
   padding: 12px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  transition: box-shadow var(--transition-base);
+  transition: all 0.4s var(--ease-out);
 }
 
 .header.scrolled {
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+  background: rgba(252, 251, 249, 0.95);
 }
 
 .header-brand h1 {
@@ -468,17 +469,20 @@ body {
 
 /* ═══════ Cards ═══════ */
 .card {
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: var(--r-lg);
-  padding: 20px;
-  transition: all var(--transition-base);
+  padding: 22px;
+  box-shadow: 0 4px 24px rgba(31, 27, 22, 0.03);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .card-hover:hover {
   border-color: var(--accent);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(31, 27, 22, 0.08);
+  transform: translateY(-4px);
 }
 
 .card-interactive {
@@ -487,14 +491,15 @@ body {
 
 .card-interactive:hover {
   border-color: var(--accent);
-  box-shadow: 0 8px 24px var(--accent-glow);
-  transform: translateY(-3px);
+  box-shadow: 0 12px 36px var(--accent-glow);
+  transform: translateY(-4px) scale(1.01);
+  background: rgba(255, 255, 255, 0.95);
 }
 
 .card-selected {
   border-color: var(--accent) !important;
-  background: var(--accent-light) !important;
-  box-shadow: 0 0 0 3px var(--accent-glow);
+  background: linear-gradient(145deg, var(--accent-light), rgba(255,255,255,0.9)) !important;
+  box-shadow: 0 0 0 3px var(--accent-glow), 0 8px 24px rgba(184, 149, 106, 0.15) !important;
 }
 
 .card-dashed {
@@ -504,7 +509,9 @@ body {
 
 .card-glass {
   background: var(--card-glass);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,0.8);
 }
 
 /* ═══════ Section Title ═══════ */
@@ -1135,6 +1142,84 @@ textarea.form-input {
   font-weight: 900;
   box-shadow: 0 2px 6px rgba(196, 154, 60, 0.4);
 }
+
+.dim-label {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--card-glass);
+  color: var(--text);
+  padding: 2px 6px;
+  border-radius: var(--r-sm);
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: var(--shadow-sm);
+  pointer-events: none;
+}
+
+.rot-label {
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent-light);
+  color: var(--accent-dark);
+  padding: 2px 6px;
+  border-radius: var(--r-sm);
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: var(--shadow-sm);
+  pointer-events: none;
+}
+
+.ruler-h {
+  position: absolute;
+  top: -15px;
+  left: 0;
+  right: 0;
+  height: 15px;
+  border-bottom: 1px solid var(--border);
+  pointer-events: none;
+}
+
+.ruler-v {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -15px;
+  width: 15px;
+  border-right: 1px solid var(--border);
+  pointer-events: none;
+}
+
+.ruler-tick {
+  position: absolute;
+  background: var(--border);
+}
+
+.ruler-h .ruler-tick {
+  width: 1px;
+  height: 4px;
+  bottom: 0;
+}
+
+.ruler-h .ruler-tick[data-major="true"] {
+  height: 8px;
+}
+
+.ruler-v .ruler-tick {
+  height: 1px;
+  width: 4px;
+  right: 0;
+}
+
+.ruler-v .ruler-tick[data-major="true"] {
+  width: 8px;
+}
+
 
 .canvas-info {
   text-align: center;
@@ -2028,6 +2113,118 @@ textarea.form-input {
   background: var(--border);
 }
 
+/* ═══════ Social Proof Bar (G: Strategy) ═══════ */
+.social-proof {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 14px 20px;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, var(--card-glass), rgba(184,149,106,0.05));
+  border-radius: var(--r-lg);
+  border: 1px solid rgba(184,149,106,0.12);
+  backdrop-filter: blur(12px);
+}
+
+.proof-item {
+  flex: 1;
+  text-align: center;
+}
+
+.proof-num {
+  display: block;
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--accent);
+  font-family: var(--font-serif);
+  letter-spacing: 1px;
+}
+
+.proof-label {
+  display: block;
+  font-size: 11px;
+  color: var(--text-sec);
+  margin-top: 2px;
+  font-weight: 500;
+}
+
+.proof-divider {
+  width: 1px;
+  height: 32px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+/* ═══════ Trust Badges ═══════ */
+.trust-badges {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.trust-badge {
+  font-size: 11px;
+  color: var(--text-sec);
+  padding: 5px 14px;
+  border-radius: var(--r-full);
+  background: var(--card-alt);
+  border: 1px solid var(--border-light);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* ═══════ Safety Alert Card ═══════ */
+.safety-alert-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.safety-alert-card::after {
+  content: '🛡️';
+  position: absolute;
+  right: -10px;
+  bottom: -10px;
+  font-size: 80px;
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+/* ═══════ Canvas Info Enhanced ═══════ */
+.canvas-info {
+  background: var(--card-glass);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--border);
+  padding: 6px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: var(--text-sec);
+  z-index: 10;
+  border-radius: 0 0 var(--r-lg) var(--r-lg);
+}
+
+/* ═══════ Drag Coords ═══════ */
+.drag-coords {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0,0,0,0.65);
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: var(--r-sm);
+  font-size: 11px;
+  font-weight: 600;
+  z-index: 30;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
 /* ═══════ Dark Mode ═══════ */
 [data-theme="dark"] {
   --bg: #1A1816;
@@ -2198,4 +2395,96 @@ textarea.form-input {
 
 .form-input::placeholder {
   color: var(--text-ter);
+}
+
+/* ═══════ Editor Enhancements ═══════ */
+.canvas-info {
+  background: var(--card-glass);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--border);
+  padding: 6px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: var(--text-sec);
+  z-index: 10;
+}
+
+.furniture-item.dragging {
+  cursor: grabbing !important;
+  opacity: 0.8;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2) !important;
+  transform: scale(1.05);
+  z-index: 1000 !important;
+}
+
+.furniture-dim {
+  position: absolute;
+  background: var(--accent);
+  color: #fff;
+  font-size: 9px;
+  padding: 2px 4px;
+  border-radius: 2px;
+  white-space: nowrap;
+  pointer-events: none;
+  font-weight: 700;
+  transition: opacity 0.2s;
+}
+
+.dim-w { top: -20px; left: 50%; transform: translateX(-50%); }
+.dim-h { right: -40px; top: 50%; transform: translateY(-50%) rotate(90deg); }
+
+.furniture-coords {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 8px;
+  color: var(--text-ter);
+  background: rgba(255,255,255,0.8);
+  padding: 0 4px;
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.furniture-label {
+  font-family: var(--font);
+  pointer-events: none;
+}
+
+/* ═══════ Buyer Checklist ═══════ */
+.buyer-check-item input[type="checkbox"] {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.buyer-check-item input[type="checkbox"]:checked {
+  background: var(--success);
+  border-color: var(--success);
+}
+
+.buyer-check-item input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  color: white;
+  font-size: 11px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.buyer-check-item span {
+  transition: color 0.2s;
+}
+
+.buyer-check-item input[type="checkbox"]:checked + span {
+  color: var(--text-ter);
+  text-decoration: line-through;
 }
